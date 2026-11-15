@@ -460,6 +460,8 @@ input[type=range]{width:100%;accent-color:var(--wine);height:28px}
 .promise{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin-top:26px}
 .promise div{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:14px;font-size:14px;color:var(--muted)}
 .promise b{display:block;color:var(--ink);font-size:15px;margin-bottom:2px}
+.me{margin:18px 0 22px;max-width:400px;padding:8px;background:#fff;border-radius:10px;box-shadow:0 18px 34px -20px rgba(43,26,36,.6);transform:rotate(-1.5deg)}
+.me img{display:block;width:100%;height:auto;border-radius:6px}
 @media (max-width:860px){.about{grid-template-columns:1fr}}
 
 /* reviews */
@@ -849,6 +851,7 @@ dialog::backdrop{background:rgba(25,14,20,.82)}
     <div class="rv">
       <p class="kick">О кондитере</p>
       <h2>Наталья Мальцева</h2>
+      <figure class="me"><img src="img/natalia.webp" srcset="img/natalia-s.webp 520w, img/natalia.webp 900w" sizes="(max-width:860px) 90vw, 400px" alt="Кондитер Наталья Мальцева с двухъярусным тортом" width="900" height="1078" loading="lazy" decoding="async"></figure>
       <p>Домашний кондитер из Санкт-Петербурга, создаю по индивидуальному заказу торты свадебные, тематические, на юбилей и день рождения детей и взрослых, на корпоратив и к семейному чаепитию. Леплю из мастики, делаю цветы из сахарной пасты, шоколада, глазури и вафельной бумаги. Постоянно учусь, иду в ногу со временем, осваиваю новые тренды современного кондитерского мира!</p>
       <blockquote>У меня всё вкусно!</blockquote>
       <div class="promise">
