@@ -11,8 +11,9 @@
 <meta property="og:title" content="Сладкая Мечта Натальи Мальцевой: торты на заказ в Санкт-Петербурге">
 <meta property="og:description" content="Детские, свадебные, 3D и арт-торты, бенто, ПП и веган десерты по индивидуальному заказу. Приморский район, Комендантский проспект.">
 <meta property="og:image" content="https://sladkaya-mechta-spb.ru/img/og.jpg">
-<link rel="icon" href="img/favicon.svg" type="image/svg+xml">
-<meta name="theme-color" content="#2B1A24">
+<link rel="icon" href="img/favicon-64.png?v=2" type="image/png">
+<link rel="apple-touch-icon" href="img/apple-touch-icon.png?v=2">
+<meta name="theme-color" content="#F9D6E0">
 <link rel="preload" href="fonts/prata-400-cyrillic-f7630c.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/golos-text-400-cyrillic-2b8fbb.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="img/h/prince.webp" as="image">
@@ -596,6 +597,69 @@ dialog::backdrop{background:rgba(25,14,20,.82)}
 .ms-x{display:grid;grid-template-columns:110px 1fr;gap:12px}.ms-xph{cursor:pointer;text-align:center;font-size:12px;color:var(--wine)}.ms-xph img{width:110px;height:110px;object-fit:cover;border-radius:10px;display:block;margin-bottom:4px}
 .ms-mini{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}.ms-mini button{border:1px solid var(--line);background:#fff;border-radius:8px;padding:5px 9px;font-size:13px;cursor:pointer}
 @media(max-width:520px){.ms-x{grid-template-columns:1fr}.ms-sz{grid-template-columns:1fr 80px auto 32px}}
+
+/* розовая тема по просьбе Натальи 15.11: фон как в группе ВК, логотип в кружке */
+:root{--wall:#8A3456;--wall2:#FFF7F9;--wall3:#B4577A;--pink:#F9D6E0;--pink2:#FCE8EE;--pink3:#F4C1CF}
+.dark{background:var(--pink);color:var(--ink)}
+.dark .lead{color:var(--muted)}
+.dark .kick{color:var(--wine)}
+.hdr{background:rgba(252,232,238,.94);color:var(--ink);border-bottom:1px solid rgba(138,52,86,.16)}
+.logo i{width:52px;height:52px;background:none;box-shadow:0 4px 10px -4px rgba(138,52,86,.45)}
+.logo i img{width:52px;height:52px;border-radius:50%}
+.logo small{color:var(--muted)}
+.nav a{color:var(--ink)}
+.hdr .tel{border-color:rgba(138,52,86,.35);color:var(--wine)}
+.burger{border-color:rgba(138,52,86,.35)}
+.burger span,.burger span::before,.burger span::after{background:var(--ink)}
+.hdr.open .burger span{background:transparent}
+@media (max-width:1000px){.nav{background:var(--pink2);border-bottom:1px solid rgba(138,52,86,.18)}.nav a{border-bottom-color:rgba(138,52,86,.1)}}
+.hero{background:radial-gradient(ellipse 60% 55% at 74% 18%,rgba(255,255,255,.55),transparent 70%),radial-gradient(ellipse 50% 60% at 10% 90%,rgba(255,255,255,.35),transparent 70%),linear-gradient(180deg,#F7C9D6,#FAD9E2)}
+.hero::after{background:linear-gradient(#F0B6C6,#E9A7BA);border-top:3px solid #E39AAE}
+.facts li{color:var(--muted)}
+.facts b{color:var(--ink)}
+.facts .st{color:#B8862E}
+.spot{background:conic-gradient(from 180deg at 50% 0,transparent 160deg,rgba(255,255,255,.35) 172deg,rgba(255,255,255,.5) 180deg,rgba(255,255,255,.35) 188deg,transparent 200deg)}
+.frame{box-shadow:0 34px 50px -30px rgba(122,40,70,.6),0 0 0 1px #8d6a2a,inset 0 0 0 2px rgba(255,255,255,.35)}
+.plaque{box-shadow:0 14px 30px -18px rgba(122,40,70,.6)}
+.dark .tab{background:rgba(255,255,255,.6);border-color:rgba(138,52,86,.22);color:var(--ink)}
+.dark .tab[aria-selected=true]{background:var(--wine);border-color:var(--wine);color:#fff}
+.dark .tab[aria-selected=true] sup{color:#FBE3EA}
+.verdict{background:rgba(255,255,255,.65);border-color:rgba(138,52,86,.25)}
+.verdict b{color:var(--wine)}
+.verdict p{color:var(--muted)}
+.dots i{background:rgba(138,52,86,.2)}
+.res{background:linear-gradient(160deg,#FBE1E8,#F6C9D6);color:var(--ink)}
+.res::before{border-color:rgba(138,52,86,.25)}
+.res .tot{color:var(--wine)}
+.res ul{color:#4F3A44}
+.res li{border-bottom-color:rgba(138,52,86,.18)}
+.res p{color:var(--muted)}
+.res .kick{color:var(--wine)}
+.pp{background:linear-gradient(120deg,#FBE1E8,#F6CCD8);color:var(--ink)}
+.pp li{color:#4F3A44}
+.pp li svg{color:var(--wine)}
+.ppg span{background:rgba(255,255,255,.88);color:var(--ink)}
+.rev{background:var(--wall2);border-color:rgba(138,52,86,.14);box-shadow:0 14px 30px -24px rgba(122,40,70,.6)}
+.rev::before{color:var(--rose)}
+.rev blockquote{color:#4F3A44}
+.rev figcaption{color:var(--muted)}
+.rev figcaption b{color:var(--ink)}
+.stars{color:#C99A3D}
+.steps li::before{color:#fff}
+.stub{background:linear-gradient(var(--rose2),var(--rose))}
+.stub span{color:var(--wine)}
+.clist .ico{background:rgba(255,255,255,.7);color:var(--wine)}
+.clist b{color:var(--ink)}
+.clist span,.clist a{color:#5A4450}
+.clist a:hover{color:var(--wine)}
+.mess a{border-color:rgba(138,52,86,.3);color:var(--ink);background:rgba(255,255,255,.55)}
+.mess a:hover{border-color:var(--wine)}
+.map{border-color:#fff;box-shadow:0 30px 50px -30px rgba(122,40,70,.7)}
+.foot{border-top-color:rgba(138,52,86,.16);color:var(--muted)}
+.foot .flogo{width:34px;height:34px;border-radius:50%;vertical-align:middle;margin-right:8px}
+.mbar{background:rgba(252,232,238,.97);box-shadow:0 12px 30px -10px rgba(122,40,70,.55);border:1px solid rgba(138,52,86,.15)}
+.mbar .btn-line{color:var(--ink)!important}
+.hero h1 em{color:#C4557A}
 </style>
 <script>document.documentElement.classList.add("anim")</script>
 <!-- Yandex.Metrika counter -->
@@ -636,7 +700,7 @@ dialog::backdrop{background:rgba(25,14,20,.82)}
 
 <header class="hdr" id="hdr">
   <div class="wrap">
-    <a class="logo" href="#top" aria-label="Сладкая Мечта, наверх"><i><svg aria-hidden="true"><use href="#i-cup"/></svg></i><span><b>Сладкая Мечта</b><small>торты на заказ · Комендантский</small></span></a>
+    <a class="logo" href="#top" aria-label="Сладкая Мечта, наверх"><i><img src="img/logo.png" alt="" width="52" height="52"></i><span><b>Сладкая Мечта</b><small>торты на заказ · Комендантский</small></span></a>
     <nav class="nav" id="nav" aria-label="Разделы">
       <a href="#gallery">Галерея</a><a href="#game">Это торт?</a><a href="#price">Цены</a><a href="#fill">Начинки</a><a href="#about">О Наталье</a><a href="#reviews">Отзывы</a><a href="#contacts">Контакты</a>
     </nav>
@@ -883,7 +947,7 @@ dialog::backdrop{background:rgba(25,14,20,.82)}
       </div>
       <div class="map rv"><img src="img/map.jpg" alt="Карта: Комендантский проспект, 36" width="1200" height="760" loading="lazy"><i class="mpin" style="left:42.23%;top:50.0%"></i><span class="mlabel" style="left:42.23%;top:50.0%">Комендантский пр., 36</span><span class="osm">© участники OpenStreetMap</span></div>
     </div>
-    <div class="foot"><span>© 2026 «Сладкая Мечта», кондитер Наталья Мальцева</span><a href="privacy.html" style="color:inherit">Политика обработки персональных данных</a><a href="#master" data-master style="color:inherit;opacity:.6">Вход для мастера</a></div>
+    <div class="foot"><span><img class="flogo" src="img/logo.png" alt="" width="34" height="34" loading="lazy">© 2026 «Сладкая Мечта», кондитер Наталья Мальцева</span><a href="privacy.html" style="color:inherit">Политика обработки персональных данных</a><a href="#master" data-master style="color:inherit;opacity:.6">Вход для мастера</a></div>
   </div>
 </footer>
 
