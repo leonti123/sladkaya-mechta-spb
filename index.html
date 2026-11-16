@@ -574,6 +574,10 @@ dialog::backdrop{background:rgba(25,14,20,.82)}
 .ms-bar>b{font-family:var(--hand);font-size:20px;color:var(--gold2)}.ms-bar span{font-size:13px;opacity:.85;margin-right:auto}
 .ms-bar .btn{padding:8px 14px;font-size:14px;min-height:0}.ms-bar .btn-line{color:#F6EAE6}
 .ms-on .hdr{position:relative}
+.ms-on [data-tk]{outline:1.5px dashed rgba(200,60,110,.6);outline-offset:3px;border-radius:3px;cursor:text}
+.ms-on [data-tk]:focus{outline:2px solid #C83C6E;background:rgba(255,255,255,.85);color:#2b1a24}
+.ms-on button [data-tk]{cursor:pointer}
+.ms-on [data-ik]{outline:4px dashed #F2CB66;outline-offset:-4px;cursor:pointer}
 .ms-toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);z-index:400;max-width:min(560px,calc(100% - 32px));background:var(--ink);color:#fff;padding:12px 18px;border-radius:12px;font-size:14px;box-shadow:0 10px 30px -10px #000}
 .ms-toast[hidden]{display:none}
 .ms-c{display:flex;gap:6px;flex-wrap:wrap}.ms-c button{border:1px solid var(--line);background:var(--paper);border-radius:8px;padding:6px 10px;font:600 13px/1 var(--sans);color:var(--wine);cursor:pointer}
@@ -1212,7 +1216,7 @@ const DATA = {"cats": [["a27", "8 Марта"], ["a26", "Торты 1,3–1,5 к
   const TKEY = "sm-master-v1", DKEY = "sm-draft-v1";
   const LS = {get: k => { try { return JSON.parse(localStorage.getItem(k)); } catch (_) { return null; } }, set: (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); return true; } catch (_) { return false; } }, del: k => { try { localStorage.removeItem(k); } catch (_) {} }};
   const token = () => { const t = LS.get(TKEY); return t && t.exp > Date.now() ? t : null; };
-  const snap = () => ({v: 1, items: DATA.items, types: TYPES, decor: DECOR, also: ALSO, bp: BP, xmas: XMAS, xb: XB, xhide: XHIDE});
+  const snap = () => ({v: 1, items: DATA.items, types: TYPES, decor: DECOR, also: ALSO, bp: BP, xmas: XMAS, xb: XB, xhide: XHIDE, tx: TX, im: IM, lk: LK});
   let nEd = 0;
   const setN = () => bar.querySelector("[data-n]").textContent = nEd ? "Несохранённых правок: " + nEd : (M && M.demo ? "Демо: сохранение подключится после запуска" : "Все правки сохранены");
   function persist() {
@@ -1222,13 +1226,13 @@ const DATA = {"cats": [["a27", "8 Марта"], ["a26", "Торты 1,3–1,5 к
     if (!ok) mtoast("Черновик не помещается в память телефона, сохраните правки на сайт");
   }
   function applyData(d) {
-    DATA.items = d.items; TYPES = d.types; DECOR = d.decor; ALSO = d.also; BP = d.bp; XMAS = d.xmas; XB = d.xb; XHIDE = !!d.xhide;
+    DATA.items = d.items; TYPES = d.types; DECOR = d.decor; ALSO = d.also; BP = d.bp; XMAS = d.xmas; XB = d.xb; XHIDE = !!d.xhide; TX = Object.assign({}, d.tx); IM = Object.assign({}, d.im); LK = Object.assign({}, d.lk);
   }
-  function refreshAll() { reindex(); renderGrid(); renderCalcUI(true); renderAlso(); renderXmas(); }
+  function refreshAll() { reindex(); renderGrid(); renderCalcUI(true); renderAlso(); renderXmas(); applyStatic(); }
 
   const bar = document.createElement("div");
   bar.className = "ms-bar"; bar.hidden = true;
-  bar.innerHTML = `<b>Режим мастера</b><span data-n></span><button class="btn btn-gold" data-a="add">+ Работа</button><button class="btn btn-line" data-a="price">Цены</button><button class="btn btn-line" data-a="xmas">Новогодняя витрина</button><button class="btn btn-rose" data-a="save">Сохранить на сайт</button><button class="btn btn-line" data-a="undo">Отменить правки</button><button class="btn btn-line" data-a="out">Выйти</button>`;
+  bar.innerHTML = `<b>Режим мастера</b><span data-n></span><button class="btn btn-gold" data-a="add">+ Работа</button><button class="btn btn-line" data-a="price">Цены</button><button class="btn btn-line" data-a="xmas">Новогодняя витрина</button><button class="btn btn-line" data-a="links">Контакты</button><button class="btn btn-rose" data-a="save">Сохранить на сайт</button><button class="btn btn-line" data-a="undo">Отменить правки</button><button class="btn btn-line" data-a="out">Выйти</button>`;
   document.body.appendChild(bar);
   const toastEl = document.createElement("div"); toastEl.className = "ms-toast"; toastEl.hidden = true; document.body.appendChild(toastEl);
   let tt; function mtoast(t, ms) { toastEl.textContent = t; toastEl.hidden = false; clearTimeout(tt); tt = setTimeout(() => toastEl.hidden = true, ms || 4500); }
@@ -1245,7 +1249,7 @@ const DATA = {"cats": [["a27", "8 Марта"], ["a26", "Торты 1,3–1,5 к
   }
 
   function loginDlg() {
-    openDlg(`<h3>Вход для мастера</h3><p>Здесь можно добавлять, менять и скрывать работы, менять цены и новогоднюю витрину.</p>
+    openDlg(`<h3>Вход для мастера</h3><p>Здесь можно менять тексты и фото на сайте, работы в галерее, цены, новогоднюю витрину, телефон и ссылки.</p>
       <form id="ms-lf"><label class="ms-f"><span>Пароль</span><input type="password" id="ms-pw" autocomplete="current-password" required></label><p class="ms-err" id="ms-le"></p>
       <div class="ms-row"><button class="btn btn-rose" type="submit">Войти</button><button class="btn btn-line" type="button" data-close>Закрыть</button></div></form>`);
     $("ms-lf").onsubmit = async e => {
@@ -1265,8 +1269,9 @@ const DATA = {"cats": [["a27", "8 Марта"], ["a26", "Торты 1,3–1,5 к
     const d = LS.get(DKEY);
     if (d && d.data) { applyData(d.data); Object.assign(PEND, d.pend || {}); nEd = d.n || 0; }
     document.documentElement.classList.add("ms-on"); bar.hidden = false; document.body.style.paddingTop = bar.offsetHeight + "px";
-    setN(); refreshAll();
-    $("gallery").scrollIntoView();
+    setN(); refreshAll(); msEditable(true);
+    scrollTo(0, 0);
+    mtoast("Нажмите на любой текст с пунктиром и печатайте. Фото с жёлтой рамкой можно заменить. Работы в галерее открываются для правки", 9000);
   }
   bar.addEventListener("click", e => {
     const a = e.target.closest("[data-a]"); if (!a) return;
@@ -1274,6 +1279,7 @@ const DATA = {"cats": [["a27", "8 Марта"], ["a26", "Торты 1,3–1,5 к
     if (k === "add") editWork(null);
     if (k === "price") editPrices();
     if (k === "xmas") editXmas();
+    if (k === "links") editLinks();
     if (k === "save") save(false);
     if (k === "out") { LS.del(TKEY); location.hash = ""; location.reload(); }
     if (k === "undo") { openDlg(`<h3>Отменить несохранённые правки?</h3><p>Сайт вернётся к последней сохранённой версии.</p><div class="ms-row"><button class="btn btn-rose" id="ms-undo">Да, отменить</button><button class="btn btn-line" data-close>Нет</button></div>`); $("ms-undo").onclick = () => { LS.del(DKEY); location.reload(); }; }
@@ -1414,11 +1420,132 @@ const DATA = {"cats": [["a27", "8 Марта"], ["a26", "Торты 1,3–1,5 к
     });
   }
 
+  // ===== расширенный режим: все тексты на странице, фото (главное и бенто), телефон и ссылки =====
+  const TX_SKIP = "script,style,svg,noscript,#grid,.tabs,#types,#decor,#lines,.also,.bento-price,.xg,.badge,#gq,#gbtns,#verdict,.gfoot,#form,#sent,#fail,#mbar,#dlg,.stub,#gframe,.res #tot,#wout,#wguests,#rnote,#picked,#gallery .sec-head .lead,#big,.bigmore,.burger,[data-master],.ms-bar,.ms-dlg,.ms-toast";
+  const TX_INL = /^(B|STRONG|EM|I|BR|SUP|SMALL)$/;
+  const hash = s => { let h = 5381; for (let i = 0; i < s.length; i++) h = (h * 33 ^ s.charCodeAt(i)) >>> 0; return h.toString(36); };
+  const blank = n => n.nodeType === 3 && !n.nodeValue.trim();
+  const ROOTS = [...document.querySelectorAll("#hdr,main,#contacts")];
+  // текст рядом с иконкой или ссылкой оборачиваем в <x-t>, чтобы его можно было править отдельно
+  ROOTS.forEach(r => r.querySelectorAll("*").forEach(el => {
+    if (el.closest(TX_SKIP)) return;
+    const kids = [...el.childNodes];
+    if (!kids.some(n => n.nodeType === 1 && !(TX_INL.test(n.tagName) && !n.attributes.length))) return;
+    kids.forEach(n => { if (n.nodeType === 3 && !blank(n)) { const w = document.createElement("x-t"); n.replaceWith(w); w.appendChild(n); } });
+  }));
+  const TXO = {}, seen = {};
+  ROOTS.forEach(r => r.querySelectorAll("*").forEach(el => {
+    if (el.closest(TX_SKIP) || el.closest("[data-tk]") || !el.textContent.trim()) return;
+    if (![...el.childNodes].some(n => n.nodeType === 3 && !blank(n))) return;
+    if (![...el.children].every(c => TX_INL.test(c.tagName) && !c.attributes.length && [...c.children].every(g => TX_INL.test(g.tagName) && !g.attributes.length))) return;
+    const h0 = el.innerHTML.replace(/\s+/g, " ").trim(), b = el.tagName.toLowerCase() + hash(h0), n = seen[b] = (seen[b] || 0) + 1, k = b + (n > 1 ? "_" + n : "");
+    el.dataset.tk = k; TXO[k] = el.innerHTML;
+  }));
+  function cleanHtml(h) {
+    const t = document.createElement("template"); t.innerHTML = h;
+    const walk = p => [...p.childNodes].map(n => n.nodeType === 3 ? esc(n.nodeValue).replace(/ /g, "&nbsp;") : n.nodeType === 1 ? (TX_INL.test(n.tagName) ? (n.tagName === "BR" ? "<br>" : `<${n.tagName.toLowerCase()}>${walk(n)}</${n.tagName.toLowerCase()}>`) : walk(n)) : "").join("");
+    return walk(t.content).replace(/(<br>)+$/, "").trim();
+  }
+  // фото, которые можно заменить: картина в главном блоке и фото бенто
+  const IMO = {};
+  document.querySelectorAll(".hero .mat img, .bento .c img").forEach((im, i) => { const k = "p" + i + "_" + hash(im.getAttribute("src")); im.dataset.ik = k; IMO[k] = {src: im.getAttribute("src"), w: +im.getAttribute("width") || 900, h: +im.getAttribute("height") || 900}; });
+  const HERO = document.querySelector(".hero .frame"), HERO_ITEM = HERO && HERO.dataset.item;
+  // телефон и ссылки (одинаковые ссылки меняются по всему сайту разом)
+  const LKA = [...document.querySelectorAll('#hdr a[href], main a[href], #contacts a[href], #mbar a[href]')].filter(a => /^(tel:|https:\/\/(vk\.me|vk\.ru|max\.ru|yandex\.ru\/maps))/.test(a.getAttribute("href")));
+  LKA.forEach(a => a.dataset.ho = a.getAttribute("href"));
+  let TX = Object.assign({}, SD && SD.tx), IM = Object.assign({}, SD && SD.im), LK = Object.assign({}, SD && SD.lk);
+  function applyStatic() {
+    document.querySelectorAll("[data-tk]").forEach(el => { const v = TX[el.dataset.tk]; const h = v != null ? v : TXO[el.dataset.tk]; if (el.innerHTML !== h && document.activeElement !== el) el.innerHTML = h; });
+    document.querySelectorAll("[data-ik]").forEach(im => { const k = IM[im.dataset.ik], o = IMO[im.dataset.ik]; const s = k ? IMG(k, "l") : o.src; if (im.getAttribute("src") !== s) { im.src = s; im.removeAttribute("srcset"); } });
+    if (HERO) { const hk = IM[HERO.querySelector("[data-ik]") && HERO.querySelector("[data-ik]").dataset.ik]; if (hk) { delete HERO.dataset.item; HERO.dataset.lb = IMG(hk, "l"); HERO.dataset.cap = ""; } else if (HERO_ITEM) { HERO.dataset.item = HERO_ITEM; delete HERO.dataset.lb; } }
+    LKA.forEach(a => a.setAttribute("href", LK[a.dataset.ho] || a.dataset.ho));
+  }
+  applyStatic();
+
+  function msEditable(on) {
+    document.querySelectorAll("[data-tk]").forEach(el => {
+      if (el.closest("button")) return;
+      if (on) { el.contentEditable = "true"; el.spellcheck = true; } else el.removeAttribute("contenteditable");
+    });
+  }
+  let txBefore = null;
+  document.addEventListener("focusin", e => { const el = M && e.target.closest && e.target.closest("[data-tk]"); if (el) txBefore = el.innerHTML; });
+  document.addEventListener("focusout", e => {
+    const el = M && e.target.closest && e.target.closest("[data-tk]"); if (!el || el.innerHTML === txBefore) return;
+    const v = cleanHtml(el.innerHTML), k = el.dataset.tk;
+    if (!v) { delete TX[k]; el.innerHTML = TXO[k]; mtoast("Пустой текст нельзя, вернула прежний"); }
+    else if (v === cleanHtml(TXO[k])) delete TX[k]; else TX[k] = v;
+    persist(); applyStatic();
+  });
+  document.addEventListener("keydown", e => { if (M && e.key === "Enter" && !e.shiftKey && e.target.closest && e.target.closest("[data-tk]")) { e.preventDefault(); e.target.blur(); } });
+  document.addEventListener("paste", e => { if (!M || !e.target.closest || !e.target.closest("[data-tk]")) return; e.preventDefault(); document.execCommand("insertText", false, (e.clipboardData || window.clipboardData).getData("text").replace(/\s+/g, " ")); });
+  document.addEventListener("click", e => {
+    if (!M || !e.target.closest || e.target.closest(".ms-bar,.ms-dlg,.ms-toast")) return;
+    const im = e.target.closest("[data-ik]");
+    if (im) { e.preventDefault(); e.stopPropagation(); return editImg(im); }
+    const el = e.target.closest("[data-tk]");
+    if (el) {
+      e.preventDefault(); e.stopPropagation();
+      if (el.closest("button")) editTextDlg(el);
+      return;
+    }
+    const a = e.target.closest("a[href]");
+    if (a && !a.closest("#grid") && a.getAttribute("href").charAt(0) !== "#") { e.preventDefault(); e.stopPropagation(); mtoast("В режиме мастера ссылки не открываются. Телефон и ссылки меняются кнопкой «Контакты»"); }
+  }, true);
+  function editTextDlg(el) {
+    const k = el.dataset.tk;
+    openDlg(`<h3>Текст на кнопке</h3><label class="ms-f"><input id="tx-v" value="${esc(el.textContent.trim())}" maxlength="120"></label><div class="ms-row"><button class="btn btn-rose" type="button" id="tx-ok">Готово</button><button class="btn btn-line" type="button" data-close>Отмена</button></div>`);
+    $("tx-v").focus();
+    $("tx-ok").onclick = () => { const v = esc($("tx-v").value.trim()); if (!v) return; if (v === cleanHtml(TXO[k])) delete TX[k]; else TX[k] = v; persist(); applyStatic(); closeDlg(); };
+  }
+  function editImg(im) {
+    const k = im.dataset.ik, o = IMO[k];
+    const box = openDlg(`<h3>Заменить фото</h3><p>Фото обрежется под ту же форму, что сейчас на сайте.</p><img src="${im.getAttribute("src")}" alt="" style="max-width:220px;max-height:260px;border-radius:10px;display:block;margin:0 0 12px">
+      <label class="ms-add ms-add-w"><input type="file" accept="image/*" hidden id="im-f"><span>Выбрать новое фото</span></label><p class="ms-err" id="im-err"></p>
+      <div class="ms-row">${IM[k] ? '<button class="btn btn-line" type="button" id="im-back">Вернуть прежнее фото</button>' : ""}<button class="btn btn-line" type="button" data-close>Закрыть</button></div>`);
+    box.addEventListener("change", async e => {
+      if (e.target.id !== "im-f" || !e.target.files.length) return;
+      $("im-err").textContent = "Обрабатываю фото…";
+      try {
+        const pic = await loadImg(e.target.files[0]), s = Math.min(1, 1200 / Math.max(o.w, o.h)), W = Math.round(o.w * s), H = Math.round(o.h * s), nk = "u/" + rid();
+        PEND[nk] = {f: shrink(pic, W, H), t: shrink(pic, 480, Math.round(480 * o.h / o.w))};
+        IM[k] = nk; persist(); applyStatic(); closeDlg(); mtoast("Фото заменено. Когда закончите, нажмите «Сохранить на сайт»");
+      } catch (x) { $("im-err").textContent = "Фото не открылось, попробуйте другое"; }
+    });
+    const bk = $("im-back"); if (bk) bk.onclick = () => { delete IM[k]; persist(); applyStatic(); closeDlg(); };
+  }
+  function editLinks() {
+    const uniq = [...new Set(LKA.map(a => a.dataset.ho))];
+    const lab = h => { if (/^tel:/.test(h)) return "Телефон"; const a = LKA.find(x => x.dataset.ho === h), t = a ? a.textContent.replace(/\s+/g, " ").trim() : ""; return "Кнопка «" + (t || h) + "»"; };
+    const cur = h => LK[h] || h;
+    const box = openDlg(`<h3>Телефон и ссылки</h3><p>Меняются сразу во всех кнопках на сайте. Сам номер, который написан текстом, поменяется тоже.</p>
+      ${uniq.map((h, i) => `<label class="ms-f"><span>${lab(h)}</span><input data-l="${i}" value="${esc(/^tel:/.test(h) ? cur(h).slice(4) : cur(h))}" ${/^tel:/.test(h) ? 'type="tel" inputmode="tel"' : 'type="url"'}></label>`).join("")}
+      <p class="ms-err" id="lk-err"></p><div class="ms-row"><button class="btn btn-rose" type="button" id="lk-ok">Готово</button><button class="btn btn-line" type="button" data-close>Отмена</button></div>`);
+    $("lk-ok").onclick = () => {
+      const nl = {}; let bad = "";
+      box.querySelectorAll("[data-l]").forEach(x => {
+        const h = uniq[+x.dataset.l]; let v = x.value.trim();
+        if (/^tel:/.test(h)) { let d = v.replace(/\D/g, ""); if (d.length === 11 && d[0] === "8") d = "7" + d.slice(1); if (d.length !== 11) { bad = "Проверьте номер телефона: нужно 11 цифр"; return; } v = "tel:+" + d; }
+        else if (!/^https:\/\/\S+$/.test(v)) { bad = "Ссылка должна начинаться с https://"; return; }
+        if (v !== h) nl[h] = v;
+      });
+      if (bad) { $("lk-err").textContent = bad; return; }
+      const oldTel = uniq.find(h => /^tel:/.test(h)), was = oldTel && cur(oldTel);
+      LK = nl;
+      const now = oldTel && cur(oldTel);
+      if (oldTel && now !== was) {
+        const d = now.slice(5), pretty = `+${d[0]} (${d.slice(1, 4)}) ${d.slice(4, 7)}-${d.slice(7, 9)}-${d.slice(9)}`, short = `+${d[0]} ${d.slice(1, 4)} ${d.slice(4, 7)}-${d.slice(7, 9)}-${d.slice(9)}`;
+        LKA.filter(a => a.dataset.ho === oldTel).forEach(a => { const el = a.matches("[data-tk]") ? a : a.querySelector("[data-tk]"); if (el && (el.textContent.replace(/\D/g, "").length >= 10)) TX[el.dataset.tk] = /\(/.test(el.textContent) ? pretty : short; });
+      }
+      persist(); applyStatic(); closeDlg(); mtoast("Готово. Когда закончите, нажмите «Сохранить на сайт»");
+    };
+  }
+
   async function save(force) {
     if (M.demo) return mtoast("Это демо: сохранение на сайт подключится после запуска");
     if (!nEd && !force) return mtoast("Новых правок нет");
     const t = token(); if (!t) { mtoast("Вход истёк, войдите ещё раз"); return loginDlg(); }
-    const data = snap(), used = new Set(data.items.flatMap(x => x.k).concat(data.xmas.map(x => x.k)));
+    const data = snap(), used = new Set(data.items.flatMap(x => x.k).concat(data.xmas.map(x => x.k), Object.values(data.im || {})));
     const files = [];
     Object.entries(PEND).forEach(([k, v]) => { if (used.has(k) && v.f) files.push({path: "img/u/l/" + k.slice(2) + ".jpg", b64: v.f.split(",")[1]}, {path: "img/u/t/" + k.slice(2) + ".jpg", b64: v.t.split(",")[1]}); });
     const btn = bar.querySelector("[data-a=save]"); btn.disabled = true; btn.textContent = "Сохраняю…";
